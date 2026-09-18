@@ -23,6 +23,13 @@ class SettingResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'System';
 
+    protected static ?string $slug = 'settings-raw';
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return SettingForm::configure($schema);

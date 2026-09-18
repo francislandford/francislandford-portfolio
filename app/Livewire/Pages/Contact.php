@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Pages;
 
+use App\Mail\ContactMessageReceived;
 use App\Models\ContactMessage;
+use App\Models\Setting;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -32,7 +35,17 @@ class Contact extends Component
     {
         $validated = $this->validate();
 
-        ContactMessage::create($validated);
+        $contactMessage = ContactMessage::create($validated);
+
+        $recipient = Setting::get('email');
+
+        if ($recipient) {
+            try {
+                Mail::to($recipient)->send(new ContactMessageReceived($contactMessage));
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
 
         $this->reset(['name', 'email', 'phone', 'subject', 'message']);
         $this->sent = true;
