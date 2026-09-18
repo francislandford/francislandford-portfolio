@@ -17,6 +17,7 @@
         })();
     </script>
     @vite(['resources/css/app.css'])
+    {{ Vite::fonts() }}
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
     <div class="mx-auto max-w-xl px-6 py-16">
