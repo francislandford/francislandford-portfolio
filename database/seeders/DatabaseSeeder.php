@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +13,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $owner = User::factory()->create([
-            'name' => 'Francis Landford',
-            'email' => 'contact@francislandford.com',
-            'is_admin' => true,
-        ]);
+        // Not User::factory(): factories require fakerphp/faker, a dev-only
+        // dependency that isn't installed in production (composer install --no-dev).
+        $owner = User::updateOrCreate(
+            ['email' => 'contact@francislandford.com'],
+            [
+                'name' => 'Francis Landford',
+                'password' => Hash::make('password'),
+                'email_verified_at' => now(),
+                'is_admin' => true,
+            ]
+        );
 
         $this->call([
             RoleSeeder::class,
