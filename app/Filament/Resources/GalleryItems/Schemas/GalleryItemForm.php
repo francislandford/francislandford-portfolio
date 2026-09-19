@@ -17,6 +17,11 @@ class GalleryItemForm
                     ->default(null),
                 FileUpload::make('image')
                     ->image()
+                    ->imageEditor()
+                    ->disk('public')
+                    ->directory('gallery')
+                    ->visibility('public')
+                    ->imagePreviewHeight('200')
                     ->required(),
                 TextInput::make('caption')
                     ->default(null),

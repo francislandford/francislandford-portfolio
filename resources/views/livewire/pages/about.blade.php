@@ -1,5 +1,6 @@
 @php
     use App\Models\Setting;
+    use Illuminate\Support\Facades\Storage;
 
     $categoryLabels = [
         'award' => 'Award',
@@ -195,6 +196,38 @@
                                 <p class="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">{{ $publication->excerpt }}</p>
                             @endif
                         </a>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- Gallery --}}
+    @if($galleryItems->isNotEmpty())
+        <section class="bg-white py-20 dark:bg-slate-950">
+            <div class="mx-auto max-w-5xl px-6">
+                <p class="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-amber-600 dark:text-amber-400">Snapshots</p>
+                <h2 class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">Gallery</h2>
+                <div class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
+                    @foreach($galleryItems as $item)
+                        <div class="group relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
+                            <img
+                                src="{{ Storage::disk('public')->url($item->image) }}"
+                                alt="{{ $item->title ?? Setting::get('name') }}"
+                                loading="lazy"
+                                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                            />
+                            @if($item->title || $item->caption)
+                                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/80 to-transparent p-3 opacity-0 transition group-hover:opacity-100">
+                                    @if($item->title)
+                                        <p class="text-sm font-semibold text-white">{{ $item->title }}</p>
+                                    @endif
+                                    @if($item->caption)
+                                        <p class="text-xs text-slate-300">{{ $item->caption }}</p>
+                                    @endif
+                                </div>
+                            @endif
+                        </div>
                     @endforeach
                 </div>
             </div>

@@ -6,6 +6,7 @@ use App\Models\Achievement;
 use App\Models\Certification;
 use App\Models\Education;
 use App\Models\Experience;
+use App\Models\GalleryItem;
 use App\Models\Publication;
 use App\Models\Skill;
 use Livewire\Attributes\Layout;
@@ -23,6 +24,7 @@ class About extends Component
             'certifications' => Certification::query()->orderByDesc('issued_at')->get(),
             'achievements' => Achievement::query()->orderByDesc('date')->orderBy('order')->get(),
             'publications' => Publication::query()->orderByDesc('published_at')->orderBy('order')->get(),
+            'galleryItems' => GalleryItem::query()->where('is_active', true)->orderBy('order')->get(),
         ]);
     }
 }
