@@ -1,10 +1,13 @@
 @php
     use App\Models\Setting;
+    use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Str;
 
     $name = Setting::get('name');
     $initials = collect(explode(' ', $name))->map(fn($part) => Str::substr($part, 0, 1))->implode('');
     $topSkills = $skills->take(6);
+    $photoPath = Setting::get('photo');
+    $photoUrl = $photoPath ? Storage::disk('public')->url($photoPath) : null;
 @endphp
 
 <div>
@@ -65,29 +68,43 @@
                     </div>
                 </div>
 
-                {{-- Terminal-inspired visual --}}
-                <div class="relative">
-                    <div class="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-amber-200/40 to-transparent blur-2xl dark:from-amber-500/10"></div>
-                    <div class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 shadow-2xl shadow-slate-900/10 dark:shadow-black/40">
-                        <div class="flex items-center gap-1.5 border-b border-slate-800 bg-slate-900 px-4 py-3">
-                            <span class="h-2.5 w-2.5 rounded-full bg-red-500/70"></span>
-                            <span class="h-2.5 w-2.5 rounded-full bg-amber-500/70"></span>
-                            <span class="h-2.5 w-2.5 rounded-full bg-emerald-500/70"></span>
-                            <span class="ml-3 font-mono text-xs text-slate-500">whoami.sh</span>
-                        </div>
-                        <div class="space-y-2.5 p-6 font-mono text-sm leading-relaxed">
-                            <p><span class="text-emerald-400">$</span> <span class="text-slate-300">whoami</span></p>
-                            <p class="text-amber-400">{{ Str::slug($name) }}</p>
-                            <p class="pt-2"><span class="text-emerald-400">$</span> <span class="text-slate-300">cat role.txt</span></p>
-                            <p class="text-slate-400">{{ Setting::get('tagline') }}</p>
-                            @if($topSkills->isNotEmpty())
-                                <p class="pt-2"><span class="text-emerald-400">$</span> <span class="text-slate-300">stack --top {{ $topSkills->count() }}</span></p>
-                                <p class="text-slate-400">[{{ $topSkills->pluck('name')->implode(', ') }}]</p>
-                            @endif
-                            <p class="pt-2"><span class="text-emerald-400">$</span> <span class="animate-pulse text-slate-300">_</span></p>
+                @if($photoUrl)
+                    {{-- Featured photo --}}
+                    <div class="relative">
+                        <div class="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-amber-200/40 to-transparent blur-2xl dark:from-amber-500/10"></div>
+                        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-2xl shadow-slate-900/10 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/40">
+                            <img
+                                src="{{ $photoUrl }}"
+                                alt="{{ $name }}"
+                                class="aspect-[4/5] w-full object-cover"
+                            />
                         </div>
                     </div>
-                </div>
+                @else
+                    {{-- Terminal-inspired visual --}}
+                    <div class="relative">
+                        <div class="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-amber-200/40 to-transparent blur-2xl dark:from-amber-500/10"></div>
+                        <div class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 shadow-2xl shadow-slate-900/10 dark:shadow-black/40">
+                            <div class="flex items-center gap-1.5 border-b border-slate-800 bg-slate-900 px-4 py-3">
+                                <span class="h-2.5 w-2.5 rounded-full bg-red-500/70"></span>
+                                <span class="h-2.5 w-2.5 rounded-full bg-amber-500/70"></span>
+                                <span class="h-2.5 w-2.5 rounded-full bg-emerald-500/70"></span>
+                                <span class="ml-3 font-mono text-xs text-slate-500">whoami.sh</span>
+                            </div>
+                            <div class="space-y-2.5 p-6 font-mono text-sm leading-relaxed">
+                                <p><span class="text-emerald-400">$</span> <span class="text-slate-300">whoami</span></p>
+                                <p class="text-amber-400">{{ Str::slug($name) }}</p>
+                                <p class="pt-2"><span class="text-emerald-400">$</span> <span class="text-slate-300">cat role.txt</span></p>
+                                <p class="text-slate-400">{{ Setting::get('tagline') }}</p>
+                                @if($topSkills->isNotEmpty())
+                                    <p class="pt-2"><span class="text-emerald-400">$</span> <span class="text-slate-300">stack --top {{ $topSkills->count() }}</span></p>
+                                    <p class="text-slate-400">[{{ $topSkills->pluck('name')->implode(', ') }}]</p>
+                                @endif
+                                <p class="pt-2"><span class="text-emerald-400">$</span> <span class="animate-pulse text-slate-300">_</span></p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </section>

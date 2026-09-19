@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\Setting as SettingModel;
 use BackedEnum;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -43,6 +44,16 @@ class Settings extends Page
                     ->description('Who you are, as shown across the site.')
                     ->columns(2)
                     ->schema([
+                        FileUpload::make('photo')
+                            ->label('Profile photo')
+                            ->image()
+                            ->imageEditor()
+                            ->disk('public')
+                            ->directory('settings')
+                            ->visibility('public')
+                            ->imagePreviewHeight('200')
+                            ->helperText('Shown as a large featured photo in the homepage hero.')
+                            ->columnSpanFull(),
                         TextInput::make('name')
                             ->label('Full name')
                             ->required(),
