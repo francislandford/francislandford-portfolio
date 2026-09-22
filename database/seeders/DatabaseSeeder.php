@@ -37,6 +37,10 @@ class DatabaseSeeder extends Seeder
             CertificationSeeder::class,
             BlogPostSeeder::class,
             LaravelFundamentalsCourseSeeder::class,
+            EloquentRelationshipsCourseSeeder::class,
+            BuildingApisCourseSeeder::class,
+            LivewireReactiveInterfacesCourseSeeder::class,
+            TestingDeployingLaravelCourseSeeder::class,
         ]);
 
         $owner->assignRole('super_admin');
