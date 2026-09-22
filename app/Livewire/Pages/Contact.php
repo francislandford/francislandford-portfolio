@@ -6,10 +6,8 @@ use App\Mail\ContactMessageReceived;
 use App\Models\ContactMessage;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Mail;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('components.layouts.app')]
 class Contact extends Component
 {
     public string $name = '';
@@ -53,6 +51,11 @@ class Contact extends Component
 
     public function render()
     {
-        return view('livewire.pages.contact');
+        $name = Setting::get('name');
+
+        return view('livewire.pages.contact')->layout('components.layouts.app', [
+            'title' => 'Contact',
+            'description' => "Have a project in mind? Get in touch with {$name}.",
+        ]);
     }
 }

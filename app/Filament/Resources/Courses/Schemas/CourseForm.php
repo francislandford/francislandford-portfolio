@@ -34,7 +34,10 @@ class CourseForm
                             ->default(null)
                             ->columnSpanFull(),
                         FileUpload::make('cover_image')
-                            ->image(),
+                            ->image()
+                            ->disk('public')
+                            ->directory('courses')
+                            ->visibility('public'),
                     ]),
 
                 Section::make('Pricing')
@@ -82,7 +85,12 @@ class CourseForm
                             ->default(null)
                             ->columnSpanFull(),
                         FileUpload::make('og_image')
-                            ->image(),
+                            ->image()
+                            ->disk('public')
+                            ->directory('courses')
+                            ->visibility('public')
+                            ->helperText('Optional. Falls back to the cover image when sharing this course.')
+                            ->columnSpanFull(),
                     ]),
             ]);
     }

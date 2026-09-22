@@ -62,6 +62,7 @@ class Lesson extends Component
             'isComplete' => $this->enrollment?->hasCompletedLesson($this->lesson) ?? false,
         ])->layout('components.layouts.app', [
             'title' => $this->lesson->title.' - '.$this->course->title,
+            'robots' => 'noindex, follow',
         ]);
     }
 }

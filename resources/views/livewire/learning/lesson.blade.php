@@ -34,7 +34,7 @@
                     <ul class="mt-4 space-y-2">
                         @foreach($lesson->attachments as $attachment)
                             <li>
-                                <a href="{{ Storage::url($attachment->file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-amber-400">
+                                <a href="{{ Storage::disk('public')->url($attachment->file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-amber-400">
                                     <svg class="h-4 w-4 text-slate-400 dark:text-slate-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3zM3.5 12a.75.75 0 01.75.75v2.75a1 1 0 001 1h9.5a1 1 0 001-1v-2.75a.75.75 0 011.5 0v2.75a2.5 2.5 0 01-2.5 2.5h-9.5A2.5 2.5 0 012.75 15.5v-2.75A.75.75 0 013.5 12z" clip-rule="evenodd" /></svg>
                                     {{ $attachment->title }}
                                 </a>

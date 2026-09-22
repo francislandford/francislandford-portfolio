@@ -38,6 +38,7 @@ class Certificate extends Component
     {
         return view('livewire.learning.certificate')->layout('components.layouts.app', [
             'title' => 'Certificate - '.$this->course->title,
+            'robots' => 'noindex, follow',
         ]);
     }
 }

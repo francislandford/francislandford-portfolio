@@ -19,6 +19,18 @@ class Show extends Component
 
     public function render(): View
     {
+        $image = $this->service->og_image
+            ? \Storage::disk('public')->url($this->service->og_image)
+            : null;
+
+        $serviceSchema = array_filter([
+            '@context' => 'https://schema.org',
+            '@type' => 'Service',
+            'name' => $this->service->title,
+            'description' => $this->service->summary,
+            'image' => $image ? [url($image)] : null,
+        ]);
+
         return view('livewire.services.show', [
             'otherServices' => Service::query()
                 ->where('is_active', true)
@@ -29,7 +41,8 @@ class Show extends Component
         ])->layout('components.layouts.app', [
             'title' => $this->service->meta_title ?: $this->service->title,
             'description' => $this->service->meta_description ?: $this->service->summary,
-            'ogImage' => $this->service->og_image ? \Storage::url($this->service->og_image) : null,
+            'ogImage' => $image,
+            'structuredData' => [$serviceSchema],
         ]);
     }
 }

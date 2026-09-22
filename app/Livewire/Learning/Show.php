@@ -4,6 +4,7 @@ namespace App\Livewire\Learning;
 
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -41,12 +42,37 @@ class Show extends Component
             ? Enrollment::where('user_id', Auth::id())->where('course_id', $this->course->id)->first()
             : null;
 
+        $image = $this->course->og_image
+            ? \Storage::disk('public')->url($this->course->og_image)
+            : ($this->course->cover_image ? \Storage::disk('public')->url($this->course->cover_image) : null);
+
+        $courseSchema = array_filter([
+            '@context' => 'https://schema.org',
+            '@type' => 'Course',
+            'name' => $this->course->title,
+            'description' => $this->course->excerpt ?: $this->course->description,
+            'image' => $image ? [url($image)] : null,
+            'provider' => [
+                '@type' => 'Organization',
+                'name' => Setting::get('name'),
+                'sameAs' => url('/'),
+            ],
+            'offers' => [
+                '@type' => 'Offer',
+                'price' => $this->course->isFree() ? '0' : (string) $this->course->price,
+                'priceCurrency' => $this->course->currency ?: 'USD',
+                'url' => url()->current(),
+            ],
+        ]);
+
         return view('livewire.learning.show', [
             'enrollment' => $enrollment,
         ])->layout('components.layouts.app', [
             'title' => $this->course->meta_title ?: $this->course->title,
             'description' => $this->course->meta_description ?: $this->course->excerpt,
-            'ogImage' => $this->course->og_image ? \Storage::url($this->course->og_image) : null,
+            'ogImage' => $image,
+            'ogType' => 'article',
+            'structuredData' => [$courseSchema],
         ]);
     }
 }

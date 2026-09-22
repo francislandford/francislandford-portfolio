@@ -17,6 +17,9 @@ class TrustedCompanyForm
                     ->required(),
                 FileUpload::make('logo')
                     ->image()
+                    ->disk('public')
+                    ->directory('companies')
+                    ->visibility('public')
                     ->required(),
                 TextInput::make('url')
                     ->url()

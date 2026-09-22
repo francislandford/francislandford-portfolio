@@ -18,7 +18,7 @@
                     @foreach($posts as $post)
                         <a href="{{ route('blog.show', $post->slug) }}" class="group block rounded-2xl border border-slate-200 p-6 transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-lg hover:shadow-slate-900/5 dark:border-slate-800 dark:hover:border-amber-500/40 dark:hover:shadow-black/30 sm:flex sm:gap-6">
                             @if($post->cover_image)
-                                <img src="{{ Storage::url($post->cover_image) }}" alt="{{ $post->title }}" class="h-40 w-full rounded-xl object-cover sm:w-48 sm:flex-none" />
+                                <img src="{{ Storage::disk('public')->url($post->cover_image) }}" alt="{{ $post->title }}" class="h-40 w-full rounded-xl object-cover sm:w-48 sm:flex-none" />
                             @endif
                             <div class="mt-4 sm:mt-0">
                                 <p class="font-mono text-xs font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400">{{ $post->published_at?->format('M j, Y') }}</p>

@@ -78,7 +78,10 @@ class PostForm
                             })
                     ),
                 FileUpload::make('cover_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('posts')
+                    ->visibility('public'),
                 Select::make('status')
                     ->options(['draft' => 'Draft', 'published' => 'Published', 'scheduled' => 'Scheduled'])
                     ->default('draft')
@@ -93,7 +96,11 @@ class PostForm
                 TextInput::make('meta_description')
                     ->default(null),
                 FileUpload::make('og_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('posts')
+                    ->visibility('public')
+                    ->helperText('Optional. Falls back to the cover image when sharing this post.'),
                 Select::make('categories')
                     ->relationship('categories', 'name', fn ($query) => $query->where('type', 'blog'))
                     ->multiple()

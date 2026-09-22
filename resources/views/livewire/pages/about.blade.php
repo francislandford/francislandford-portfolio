@@ -213,7 +213,7 @@
                         <div class="group relative aspect-square overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
                             <img
                                 src="{{ Storage::disk('public')->url($item->image) }}"
-                                alt="{{ $item->title ?? Setting::get('name') }}"
+                                alt="{{ $item->title ?: ($item->caption ?: Setting::get('name').' — gallery photo '.$loop->iteration) }}"
                                 loading="lazy"
                                 class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                             />

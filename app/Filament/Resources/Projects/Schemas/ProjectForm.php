@@ -89,7 +89,10 @@ class ProjectForm
                     ->default(null)
                     ->columnSpanFull(),
                 FileUpload::make('cover_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('projects')
+                    ->visibility('public'),
                 Select::make('status')
                     ->options(['draft' => 'Draft', 'published' => 'Published'])
                     ->default('draft')
@@ -105,7 +108,11 @@ class ProjectForm
                 TextInput::make('meta_description')
                     ->default(null),
                 FileUpload::make('og_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('projects')
+                    ->visibility('public')
+                    ->helperText('Optional. Falls back to the cover image when sharing this project.'),
                 Select::make('categories')
                     ->relationship('categories', 'name', fn ($query) => $query->where('type', 'project'))
                     ->multiple()

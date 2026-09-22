@@ -4,12 +4,11 @@ namespace App\Livewire\Projects;
 
 use App\Models\Category;
 use App\Models\Project;
-use Livewire\Attributes\Layout;
+use App\Models\Setting;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Layout('components.layouts.app')]
 class Index extends Component
 {
     use WithPagination;
@@ -35,9 +34,14 @@ class Index extends Component
             ->orderBy('order')
             ->paginate(9);
 
+        $name = Setting::get('name');
+
         return view('livewire.projects.index', [
             'projects' => $projects,
             'categories' => Category::query()->where('type', 'project')->orderBy('name')->get(),
+        ])->layout('components.layouts.app', [
+            'title' => 'Projects',
+            'description' => "A look at what {$name} has been building — design, development, and mobile projects.",
         ]);
     }
 }

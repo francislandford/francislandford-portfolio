@@ -71,6 +71,7 @@ class Quiz extends Component
     {
         return view('livewire.learning.quiz')->layout('components.layouts.app', [
             'title' => $this->course->quiz->title.' - '.$this->course->title,
+            'robots' => 'noindex, follow',
         ]);
     }
 }

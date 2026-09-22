@@ -7,10 +7,8 @@ use App\Models\Payment;
 use App\Services\Payments\CoursePaymentService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('components.layouts.app')]
 class Checkout extends Component
 {
     public Course $course;
@@ -67,6 +65,9 @@ class Checkout extends Component
 
     public function render(): View
     {
-        return view('livewire.learning.checkout');
+        return view('livewire.learning.checkout')->layout('components.layouts.app', [
+            'title' => 'Checkout — '.$this->course->title,
+            'robots' => 'noindex, nofollow',
+        ]);
     }
 }

@@ -17,7 +17,7 @@
 
     @if($project->cover_image)
         <div class="mx-auto -mt-10 max-w-5xl px-6">
-            <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full rounded-2xl shadow-xl shadow-slate-900/20 dark:shadow-black/40" />
+            <img src="{{ Storage::disk('public')->url($project->cover_image) }}" alt="{{ $project->title }}" class="w-full rounded-2xl shadow-xl shadow-slate-900/20 dark:shadow-black/40" />
         </div>
     @endif
 

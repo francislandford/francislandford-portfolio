@@ -195,7 +195,7 @@
                     @foreach($featuredProjects as $project)
                         <a href="{{ route('projects.show', $project->slug) }}" class="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900 dark:hover:shadow-black/30">
                             @if($project->cover_image)
-                                <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="h-48 w-full object-cover" />
+                                <img src="{{ Storage::disk('public')->url($project->cover_image) }}" alt="{{ $project->title }}" class="h-48 w-full object-cover" />
                             @else
                                 <div class="flex h-48 w-full items-center justify-center bg-slate-900 text-white dark:bg-slate-950">
                                     <span class="font-mono text-sm font-semibold uppercase tracking-widest">{{ $project->client }}</span>
@@ -243,7 +243,7 @@
                 <p class="text-center font-mono text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Trusted By</p>
                 <div class="mt-8 flex flex-wrap items-center justify-center gap-10">
                     @foreach($trustedCompanies as $company)
-                        <img src="{{ Storage::url($company->logo) }}" alt="{{ $company->name }}" class="h-8 opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 dark:opacity-60 dark:invert" />
+                        <img src="{{ Storage::disk('public')->url($company->logo) }}" alt="{{ $company->name }}" class="h-8 opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 dark:opacity-60 dark:invert" />
                     @endforeach
                 </div>
             </div>

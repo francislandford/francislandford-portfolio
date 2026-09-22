@@ -22,8 +22,8 @@ class Show extends Component
     public function render(): View
     {
         $image = $this->post->og_image
-            ? \Storage::url($this->post->og_image)
-            : ($this->post->cover_image ? \Storage::url($this->post->cover_image) : null);
+            ? \Storage::disk('public')->url($this->post->og_image)
+            : ($this->post->cover_image ? \Storage::disk('public')->url($this->post->cover_image) : null);
 
         $articleSchema = array_filter([
             '@context' => 'https://schema.org',

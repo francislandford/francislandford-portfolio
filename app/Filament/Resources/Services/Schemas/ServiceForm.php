@@ -36,7 +36,10 @@ class ServiceForm
                 TextInput::make('meta_description')
                     ->default(null),
                 FileUpload::make('og_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('services')
+                    ->visibility('public'),
             ]);
     }
 }

@@ -2,6 +2,8 @@
     use App\Models\Setting;
     use App\Models\Service;
     use App\Models\SocialLink;
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Str;
 
     $siteName = Setting::get('name', 'Francis Landford');
     $siteTagline = Setting::get('tagline');
@@ -11,6 +13,16 @@
 
     $pageTitle = $title ?? $siteName;
     $pageDescription = $description ?? $siteDescription;
+    $pageRobots = $robots ?? 'index, follow';
+
+    $resolvedOgImage = $ogImage ?? null;
+    if (blank($resolvedOgImage)) {
+        $sitePhoto = Setting::get('photo');
+        $resolvedOgImage = $sitePhoto ? Storage::disk('public')->url($sitePhoto) : null;
+    }
+    if (! blank($resolvedOgImage) && ! Str::startsWith($resolvedOgImage, ['http://', 'https://'])) {
+        $resolvedOgImage = url($resolvedOgImage);
+    }
 
     $personSchema = array_filter([
         '@context' => 'https://schema.org',
@@ -21,6 +33,7 @@
         'url' => Setting::get('website', url('/')),
         'email' => Setting::get('email'),
         'address' => Setting::get('address'),
+        'image' => $resolvedOgImage,
         'sameAs' => $socialLinks->pluck('url')->values()->all(),
     ]);
 
@@ -40,21 +53,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ $pageTitle }}{{ isset($title) ? ' — '.$siteName : ' — '.$siteTagline }}</title>
     <meta name="description" content="{{ $pageDescription }}" />
+    <meta name="robots" content="{{ $pageRobots }}" />
 
     <meta property="og:type" content="{{ $ogType ?? 'website' }}" />
     <meta property="og:site_name" content="{{ $siteName }}" />
     <meta property="og:url" content="{{ url()->current() }}" />
     <meta property="og:title" content="{{ $pageTitle }}" />
     <meta property="og:description" content="{{ $pageDescription }}" />
-    @if(!empty($ogImage))
-        <meta property="og:image" content="{{ $ogImage }}" />
+    @if(!empty($resolvedOgImage))
+        <meta property="og:image" content="{{ $resolvedOgImage }}" />
     @endif
 
-    <meta name="twitter:card" content="{{ !empty($ogImage) ? 'summary_large_image' : 'summary' }}" />
+    <meta name="twitter:card" content="{{ !empty($resolvedOgImage) ? 'summary_large_image' : 'summary' }}" />
     <meta name="twitter:title" content="{{ $pageTitle }}" />
     <meta name="twitter:description" content="{{ $pageDescription }}" />
-    @if(!empty($ogImage))
-        <meta name="twitter:image" content="{{ $ogImage }}" />
+    @if(!empty($resolvedOgImage))
+        <meta name="twitter:image" content="{{ $resolvedOgImage }}" />
     @endif
 
     <link rel="canonical" href="{{ url()->current() }}" />

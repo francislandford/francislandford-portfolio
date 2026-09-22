@@ -8,6 +8,12 @@
         </div>
     </section>
 
+    @if($course->cover_image)
+        <div class="mx-auto -mt-10 max-w-4xl px-6">
+            <img src="{{ Storage::disk('public')->url($course->cover_image) }}" alt="{{ $course->title }}" class="w-full rounded-2xl shadow-xl shadow-slate-900/20 dark:shadow-black/40" />
+        </div>
+    @endif
+
     <section class="bg-white py-16 dark:bg-slate-950">
         <div class="mx-auto grid max-w-5xl gap-10 px-6 sm:grid-cols-5">
             <div class="sm:col-span-3">

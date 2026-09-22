@@ -59,9 +59,18 @@ Route::middleware('track.visits')->group(function () {
 });
 
 Route::get('/sitemap.xml', function () {
+    $aboutLastmod = collect([
+        Experience::max('updated_at'),
+        Education::max('updated_at'),
+        Certification::max('updated_at'),
+        \App\Models\Achievement::max('updated_at'),
+        \App\Models\Publication::max('updated_at'),
+        \App\Models\GalleryItem::max('updated_at'),
+    ])->filter()->max();
+
     $urls = collect([
         ['loc' => route('home'), 'changefreq' => 'weekly', 'priority' => '1.0'],
-        ['loc' => route('about'), 'changefreq' => 'monthly', 'priority' => '0.7'],
+        ['loc' => route('about'), 'lastmod' => $aboutLastmod ? \Illuminate\Support\Carbon::parse($aboutLastmod)->toAtomString() : null, 'changefreq' => 'monthly', 'priority' => '0.7'],
         ['loc' => route('services.index'), 'changefreq' => 'monthly', 'priority' => '0.8'],
         ['loc' => route('projects.index'), 'changefreq' => 'weekly', 'priority' => '0.8'],
         ['loc' => route('blog.index'), 'changefreq' => 'daily', 'priority' => '0.8'],
@@ -87,6 +96,12 @@ Route::get('/sitemap.xml', function () {
             'lastmod' => $post->updated_at->toAtomString(),
             'changefreq' => 'monthly',
             'priority' => '0.6',
+        ]))
+        ->concat(Course::query()->where('status', 'published')->get()->map(fn (Course $course) => [
+            'loc' => route('elearning.show', $course->slug),
+            'lastmod' => $course->updated_at->toAtomString(),
+            'changefreq' => 'monthly',
+            'priority' => '0.7',
         ]));
 
     return response()

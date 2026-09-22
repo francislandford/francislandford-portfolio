@@ -3,11 +3,9 @@
 namespace App\Livewire\Search;
 
 use App\Services\Search\SiteSearchService;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
-#[Layout('components.layouts.app')]
 class Index extends Component
 {
     #[Url(as: 'q')]
@@ -27,6 +25,9 @@ class Index extends Component
 
         return view('livewire.search.index', [
             'results' => $results,
+        ])->layout('components.layouts.app', [
+            'title' => 'Search',
+            'robots' => 'noindex, follow',
         ]);
     }
 }

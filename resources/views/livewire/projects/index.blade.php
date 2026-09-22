@@ -29,7 +29,7 @@
                     @foreach($projects as $project)
                         <a href="{{ route('projects.show', $project->slug) }}" class="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-lg hover:shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-amber-500/40 dark:hover:shadow-black/30">
                             @if($project->cover_image)
-                                <img src="{{ Storage::url($project->cover_image) }}" alt="{{ $project->title }}" class="h-44 w-full object-cover" />
+                                <img src="{{ Storage::disk('public')->url($project->cover_image) }}" alt="{{ $project->title }}" class="h-44 w-full object-cover" />
                             @else
                                 <div class="flex h-44 w-full items-center justify-center bg-slate-900 text-white dark:bg-slate-950">
                                     <span class="font-mono text-sm font-semibold uppercase tracking-widest">{{ $project->client }}</span>

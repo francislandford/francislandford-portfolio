@@ -25,7 +25,10 @@ class TestimonialForm
                 TextInput::make('client_company')
                     ->default(null),
                 FileUpload::make('avatar')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('testimonials')
+                    ->visibility('public'),
                 Textarea::make('content')
                     ->required()
                     ->columnSpanFull(),
